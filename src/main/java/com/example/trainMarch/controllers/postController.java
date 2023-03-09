@@ -3,6 +3,7 @@ package com.example.trainMarch.controllers;
 import com.example.trainMarch.entities.post;
 import com.example.trainMarch.entities.user;
 import com.example.trainMarch.requests.postCreateRequest;
+import com.example.trainMarch.requests.postUpdateRequest;
 import org.springframework.web.bind.annotation.*;
 import com.example.trainMarch.services.postService;
 
@@ -32,6 +33,17 @@ public class postController {
     public post saveOnePost(@RequestBody postCreateRequest postCreateRequest)
     {
         return postService.saveOnePost(postCreateRequest);
+    }
+    @PutMapping("/{postId}")
+    public post updateOnePost(@PathVariable Long postId,@RequestBody postUpdateRequest postUpdateRequest)
+    {
+        return postService.updateOnePost(postId,postUpdateRequest);
+    }
+
+    @DeleteMapping("/{postId}")
+    public void deleteOnePost(@PathVariable Long postId)
+    {
+        postService.deletePostById(postId);
     }
 
 

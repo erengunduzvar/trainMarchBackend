@@ -3,6 +3,7 @@ import com.example.trainMarch.entities.post;
 import com.example.trainMarch.entities.user;
 import com.example.trainMarch.repos.*;
 import com.example.trainMarch.requests.postCreateRequest;
+import com.example.trainMarch.requests.postUpdateRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,8 +40,28 @@ public class postService {
 
     public post saveOnePost(postCreateRequest postCreateRequest) {
         user foundUser = userService.getUserById(postCreateRequest.getUserId());
+        if(foundUser == null)
+            return null;
+
+        return postRepository.save(postCreateRequest.toPost(foundUser));
 
 
+    }
 
+    public post updateOnePost(Long postId, postUpdateRequest postUpdateRequest) {
+        Optional<post> foundPost = postRepository.findById(postId);
+        if(foundPost.isEmpty())
+            return null;
+
+        post newPost = foundPost.get();
+        newPost.setText(postUpdateRequest.getText());
+        newPost.setTitle(postUpdateRequest.getTitle());
+
+        postRepository.save(newPost);
+        return newPost;
+    }
+
+    public void deletePostById(Long postId) {
+        postRepository.deleteById(postId);
     }
 }
